@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NU Notice Dashboard</title>
+  <meta name="theme-color" content="#10b981">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Hind Siliguri', sans-serif; }
+    body { background-color: #f4f6fa; color: #1e293b; padding-bottom: 30px; }
+    header { background: #ffffff; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 10; }
+    .header-title { font-size: 20px; font-weight: 700; color: #0f172a; }
+    .badge-live { background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .badge-live::before { content: ""; width: 8px; height: 8px; background: #fff; border-radius: 50%; display: inline-block; }
+    .container { max-width: 600px; margin: 0 auto; padding: 16px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border-radius: 16px; padding: 18px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .stat-num { font-size: 28px; font-weight: 700; }
+    .stat-green { color: #10b981; }
+    .stat-blue { color: #3b82f6; }
+    .stat-label { font-size: 13px; color: #64748b; margin-top: 4px; font-weight: 600; }
+    .section-title { font-size: 17px; font-weight: 700; margin-bottom: 12px; color: #334155; }
+    .notice-card { background: #ffffff; border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); border-left: 4px solid #10b981; }
+    .notice-date { font-size: 12px; color: #94a3b8; font-weight: 600; margin-bottom: 6px; }
+    .notice-title { font-size: 15px; font-weight: 600; color: #1e293b; line-height: 1.5; margin-bottom: 12px; }
+    .btn-view { display: inline-block; padding: 8px 16px; background: #10b981; color: #ffffff; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-title">NU নোটিশ বোর্ড</div>
+    <div class="badge-live">Live</div>
+  </header>
+
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num stat-green">সক্রিয়</div>
+        <div class="stat-label">মনিটরিং স্ট্যাটাস</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num stat-blue">১৫ মি.</div>
+        <div class="stat-label">চেক ইন্টারভ্যাল</div>
+      </div>
+    </div>
+
+    <div class="section-title">সর্বশেষ নোটিশ</div>
+    <div class="notice-card">
+      <div class="notice-date">আজকের নোটিশ</div>
+      <div class="notice-title" id="latest-title">নোটিশ লোড হচ্ছে...</div>
+      <a href="https://www.nu.ac.bd/recent-notices.php" target="_blank" class="btn-view">মূল ওয়েবসাইট দেখুন ↗</a>
+    </div>
+  </div>
+
+  <script>
+    fetch('last_notice.txt')
+      .then(res => res.text())
+      .then(text => {
+        if (text && text.trim()) {
+          document.getElementById('latest-title').innerText = text.trim();
+        } else {
+          document.getElementById('latest-title').innerText = 'বর্তমানে কোনো নোটিশ পাওয়া যায়নি';
+        }
+      })
+      .catch(() => {
+        document.getElementById('latest-title').innerText = 'লোড করতে সমস্যা হয়েছে';
+      });
+  </script>
+</body>
+</html>
